@@ -1,0 +1,90 @@
+body {
+    font-family: 'Roboto', 'Times New Roman', Times, serif;
+    background-color: #bead9a;
+  }
+  
+  .container {
+    max-width: 400px;
+    margin: 50px auto;
+    text-align: center;
+    background-color: #e4c0a2;
+    padding: 20px;
+    border-radius: 0px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .input-container {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  button {
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+    border: none;
+    border-radius: 0px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: calc(33.33% - 10px);
+  }
+  
+  button {
+    cursor: pointer;
+    background-color: #d8a235;
+    color: white;
+  }
+  
+  button:hover {
+    background-color: #d8a235;
+  }
+  
+  #timerDisplay {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  #progressScreen {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  #progressScreen ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #progressScreen li {
+    margin-bottom: 10px;
+  }
+  
+  #progressScreen button {
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 0px;
+  }
+  
+  #progressScreen button:hover {
+    background-color: #45a049;
+  }
+  

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="timer_style.css">
+  <style>
+     body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    
+    main {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .task-form {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    }
+    
+    .task-list {
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+    
+    .task {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 50px;
+        margin-bottom: 10px;
+        padding: 5px;
+        border: 1px solid #f5d6a6;
+        border-radius: 5px;
+    }
+
+    .task button {
+        background-color: #f6ab20;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+
+    label {
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+        header li {
+        margin: 5px;
+        }
+
+        header li a {
+        color: rgb(0, 0, 0);
+        text-decoration: none;
+        }
+
+        nav {
+        padding: 5px;
+        background-color: #edd6b4;
+        }
+
+
+p {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 30px;
+  position: sticky;
+}
+
+header { 
+  background-color: #edd6b4;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 5px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 0 25px 0 black;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+}
+
+header * {
+  display: inline;
+  justify-content: space-between;
+}
+
+header li {
+  margin: 20px;
+}
+
+header li a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+nav {
+  padding: 5px;
+  background-color: #edd6b4;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #eace9f;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #efbd65;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+*,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    background: #f6e8d2;
+    position: relative;
+}
+
+
+  </style>
+  <header>
+    <nav>
+        <h2>StudyTrack</h2>
+        <ul>
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="calendar.html">Calendar</a>
+            </li>
+            <li>
+                <a href="task_manager.html">Task Manager</a>
+            </li>
+            <li>
+                <a href="work.html">Schedule</a>
+            </li>
+        </ul>
+    </nav>
+  </header>
+  
+</head>
+<body style="margin-top: 50px;">
+  <div class="container">
+    <h1>Timer</h1>
+    <div class="input-container">
+      <label for="taskName">Task Name:</label>
+      <input type="text" id="taskName" placeholder="Enter Task Name">
+    </br>
+      <label for="hoursInput">Hours:</label>
+      <input type="number" id="hoursInput" placeholder="0">
+    </br>
+      <label for="minutesInput">Minutes:</label>
+      <input type="number" id="minutesInput" placeholder="0">
+    </br>
+      <button onclick="startTimer()">Start Timer</button>
+      <button onclick="stopTimer()">Stop Timer</button>
+      <button onclick="resumeTimer()">Resume Timer</button>
+    </br>
+      <button onclick="checkProgress()">Check Progress</button>
+    </div>
+    <div id="timerDisplay"></div>
+  </div>
+
+  <div id="progressScreen" class="hidden">
+    <h1>Tasks Completed</h1>
+    <ul id="completedTasks"></ul>
+    <button onclick="goBack()">Go Back</button>
+  </div>
+
+  <script src="timer_js.js"></script>
+</body>
+</html>

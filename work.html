@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Schedule</title>
+    <script src="daypilot-all.min.js" type="text/javascript"></script>
+    <style>
+        #calendar {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f6e8d2;
+            position: relative;
+        }
+        header {
+            background-color: #edd6b4;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100%;
+            z-index: 9999;
+            padding: 10px;
+        }
+        h2 {
+            margin: 0;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0 0 10px 0;
+        }
+        nav ul li a {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:hover {
+            background-color: #c2b18e;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>StudyTrack</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="calendar.html">Calendar</a></li>
+                <li><a href="timer.html">Timer</a></li>
+                <li><a href="task_manager.html">Task Manager</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="calendar"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendar = new DayPilot.Calendar("calendar");
+            calendar.viewType = "Week";
+            calendar.eventCreatingStartEndEnabled = true;
+
+            calendar.onTimeRangeSelected = function(args) {
+                var name = prompt("Event name:", "New Event");
+                if (!name) {
+                    return;
+                }
+                var e = new DayPilot.Event({
+                    start: args.start,
+                    end: args.end,
+                    id: DayPilot.guid(),
+                    text: name
+                });
+                calendar.events.add(e);
+                calendar.clearSelection();
+                saveEventsToLocalStorage(calendar.events.list);
+            };
+
+            calendar.onEventMoved = function(args) {
+                saveEventsToLocalStorage(calendar.events.list);
+            };
+
+            calendar.onEventResized = function(args) {
+                saveEventsToLocalStorage(calendar.events.list);
+            };
+
+            function saveEventsToLocalStorage(events) {
+                localStorage.setItem('calendarEvents', JSON.stringify(events));
+            }
+
+            function loadEventsFromLocalStorage() {
+                const storedEvents = localStorage.getItem('calendarEvents');
+                if (storedEvents) {
+                    const parsedEvents = JSON.parse(storedEvents);
+                    parsedEvents.forEach(event => {
+                        calendar.events.add(new DayPilot.Event(event));
+                    });
+                }
+            }
+
+            calendar.init();
+            loadEventsFromLocalStorage();
+        });
+    </script>
+</body>
+</html>

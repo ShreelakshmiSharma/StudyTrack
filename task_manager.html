@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Manager</title>
+<link rel="stylesheet" href="task_man.css">
+</head>
+
+<body style="background-color:  #f8dba2;">
+<header>
+    <nav>
+        <h2>StudyTrack</h2>
+        <ul>
+            <li>
+                <a href="index.html">Home</a>
+            </li>
+            <li>
+                <a href="calendar.html">Calendar</a>
+            </li>
+            <li>
+                <a href="timer.html">Timer</a>
+            </li>
+            <li>
+                <a href="work.html">Schedule</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<h1>Deadline Manager</h1>
+<div class="task-list card">
+    <label for="task">Task Name</label>
+    <input type="text" id="task" placeholder="Enter task name">
+    
+    <label for="priority">Priority</label>
+    <select id="priority">
+        <option value="top">Top Priority</option>
+        <option value="average">Average Priority</option>
+        <option value="low">Low Priority</option>
+    </select>
+    
+    <label for="deadline">Due Date</label>
+    <input type="date" id="deadline">
+    
+    <button id="addtask">Add Task</button>
+    <div class="task-list" id="tasklist">
+    </div>
+</div>
+
+<!-- New div to store completed tasks -->
+<div class="completed-tasks card" id="completedTasks">
+    <h2>Completed Tasks</h2>
+</div>
+
+<script>
+    const taskInput = document.getElementById("task");
+const priorityInput = document.getElementById("priority");
+const deadlineInput = document.getElementById("deadline");
+const addTaskButton = document.getElementById("addtask");
+const taskList = document.getElementById("tasklist");
+const completedTasksDiv = document.getElementById("completedTasks");
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadTasksFromLocalStorage();
+});
+
+function loadTasksFromLocalStorage() {
+    const storedTasks = localStorage.getItem("tasks");
+    if (storedTasks) {
+        const tasks = JSON.parse(storedTasks);
+        tasks.forEach(task => {
+            addTaskToDOM(task);
+        });
+    }
+}
+
+function saveTasksToLocalStorage(tasks) {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function addTaskToDOM(task) {
+    const taskItem = document.createElement("div");
+    taskItem.classList.add("task");
+    taskItem.innerHTML = `
+        <p>${task.name}</p>
+        <p>Priority: ${task.priority}</p>
+        <p>Deadline: ${task.deadline}</p>
+        <p>Urgency: ${task.urgency}</p>
+        <p>Add note: <input type="text" class="notetask"></input></p>
+        <button class="mark-done">Mark Done</button>
+    `;
+    taskList.appendChild(taskItem);
+}
+
+addTaskButton.addEventListener("click", () => {
+    const task = taskInput.value;
+    const priority = priorityInput.value;
+    const deadline = deadlineInput.value;
+    if (task.trim() === "" || deadline === "") {
+        alert("Please choose deadline.");
+        return; 
+    }
+
+    const selectedDate = new Date(deadline);
+    const currentDate = new Date();
+
+    if (selectedDate <= currentDate) {
+        alert("Please select deadline.");
+        return; 
+    }
+
+    function calculate_urgency(deadline) {
+        const currentDate = new Date();
+        const fiveDaysAhead = new Date();
+        fiveDaysAhead.setDate(currentDate.getDate() + 5);
+        
+        if (deadline <= fiveDaysAhead) {
+            return "Urgent";
+        } else {
+            return "Not Urgent";
+        }
+    }
+
+    const urgency = calculate_urgency(selectedDate);
+
+    const taskItem = document.createElement("div");
+    taskItem.classList.add("task");
+    taskItem.innerHTML = `
+        <p>${task}</p>
+        <p>Priority: ${priority}</p>
+        <p>Deadline: ${deadline}</p>
+        <p>Urgency: ${urgency}</p>
+        <p>Add note: <input type="text" class="notetask"></input></p>
+        <button class="mark-done">Mark Done</button>
+    `;
+    
+    taskList.appendChild(taskItem);
+    
+    taskInput.value = "";
+    priorityInput.value = "top";
+    deadlineInput.value = "";
+
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push({
+        name: task,
+        priority: priority,
+        deadline: deadline,
+        urgency: urgency
+    });
+    saveTasksToLocalStorage(tasks);
+});
+
+taskList.addEventListener("click", (event) => {
+    if (event.target.classList.contains("mark-done")) {
+        const taskItem = event.target.parentElement;
+        taskItem.style.backgroundColor = "#f6ab20";
+        event.target.disabled = true;
+
+        completedTasksDiv.appendChild(taskItem);
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("delete-task");
+        taskItem.appendChild(deleteButton);
+    }
+});
+
+completedTasksDiv.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-task")) {
+        const taskItem = event.target.parentElement;
+        taskItem.remove();
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const taskIndex = tasks.findIndex(task => task.name === taskItem.children[0].textContent);
+        if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1);
+            saveTasksToLocalStorage(tasks);
+        }
+    }
+});
+
+</script>
+</body>
+</html>
